@@ -15,7 +15,7 @@ html {
 }
 
 body {
-  font: 14px helvetica,arial,freesans,clean,sans-serif;
+  font: 16px -apple-system,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif;
   line-height: 1.6;
   margin: 0 auto;
   padding: 20px;
@@ -73,7 +73,7 @@ hr {
 }
 
 p {
-  margin: 15px 0; 
+  margin: 15px 0;
 }
 
 pre, code {
@@ -211,7 +211,7 @@ img {
 .shadow {
   -webkit-box-shadow: 0 5px 15px #000;
   -moz-box-shadow: 0 5px 15px #000;
-  box-shadow: 0 5px 15px #000;		
+  box-shadow: 0 5px 15px #000;
 }
 
 @media screen and (min-width: 914px) {
