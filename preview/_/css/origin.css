@@ -15,7 +15,7 @@ html {
 }
 
 body {
-  font: 16px -apple-system,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif;
+  font: 14px DejaVu Sans Mono,WenQuanYi Zen Hei,Courier New,NSimSun,BlinkMacSystemFont,-apple-system,Helvetica Neue,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,sans-serif;
   line-height: 1.6;
   margin: 0 auto;
   padding: 20px;

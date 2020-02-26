@@ -103,7 +103,7 @@
       console.log(getContent())
 
       // mermaid.initialize({startOnLoad: false, theme: 'forest'});
-      
+
       mermaid.init()
 
       loadPlantUML();
