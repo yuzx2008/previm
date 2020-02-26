@@ -63,7 +63,7 @@ function! previm#refresh() abort
 endfunction
 
 let s:default_origin_css_path = "@import url('../../_/css/origin.css');"
-let s:default_github_css_path = "@import url('../../_/css/lib/github.css');"
+let s:default_github_css_path = "@import url('../../_/css/lib/highlightjs.min.css');"
 
 function! previm#refresh_css() abort
   let css = []

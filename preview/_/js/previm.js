@@ -1,6 +1,11 @@
 'use strict';
 
 (function(_doc, _win) {
+  mermaid.mermaidAPI.initialize({
+    startOnLoad: false,
+    theme: 'default' // neutral forest default dark
+  });
+
   var REFRESH_INTERVAL = 1000;
   var kt = require('katex')
   var mk = require("markdown-it-texmath").use(kt)
@@ -95,8 +100,11 @@
     if (needReload && (typeof getContent === 'function') && (typeof getFileType === 'function')) {
       var beforePageYOffset = _win.pageYOffset;
       _doc.getElementById('preview').innerHTML = transform(getFileType(), getContent());
+      console.log(getContent())
 
-      mermaid.init();
+      // mermaid.initialize({startOnLoad: false, theme: 'forest'});
+      
+      mermaid.init()
 
       loadPlantUML();
 
