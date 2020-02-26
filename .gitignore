@@ -1,5 +1,5 @@
-# preview/**
-# !preview/_
+preview/**/
+!preview/_/
 doc/tags*
 
 # Created by https://www.gitignore.io/api/vim,osx
