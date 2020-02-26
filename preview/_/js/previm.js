@@ -2,6 +2,9 @@
 
 (function(_doc, _win) {
   var REFRESH_INTERVAL = 1000;
+  var kt = require('katex')
+  var mk = require("markdown-it-texmath").use(kt)
+  // var mk = require('@liradb2000/markdown-it-katex')
   var md = new _win.markdownit({html: true, linkify: true})
                    .use(_win.markdownitAbbr)
                    .use(_win.markdownitDeflist)
@@ -9,7 +12,9 @@
                    .use(_win.markdownitSub)
                    .use(_win.markdownitSup)
                    .use(_win.markdownitCheckbox)
-                   .use(_win.markdownitCjkBreaks);
+                   .use(_win.markdownitCjkBreaks)
+                   // .use(mk)
+                   .use(mk, {delimiters:'dollars',macros:{"\\RR": "\\mathbb{R}"}}) ;
 
   // Override default 'fence' ruler for 'mermaid' support
   var original_fence = md.renderer.rules.fence;
