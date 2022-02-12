@@ -7,8 +7,8 @@
   });
 
   var REFRESH_INTERVAL = 1000;
-  var kt = require('katex')
-  var mk = require("markdown-it-texmath").use(kt)
+  // var kt = require('katex')
+  // var mk = require("markdown-it-texmath"); // .use(kt)
   // var mk = require('@liradb2000/markdown-it-katex')
   var md = new _win.markdownit({html: true, linkify: true})
                    .use(_win.markdownitAbbr)
@@ -18,8 +18,7 @@
                    .use(_win.markdownitSup)
                    .use(_win.markdownitCheckbox)
                    .use(_win.markdownitCjkBreaks)
-                   // .use(mk)
-                   .use(mk, {delimiters:'dollars',macros:{"\\RR": "\\mathbb{R}"}}) ;
+                   .use(texmath, {engine: katex, delimiters:'dollars',macros:{"\\RR": "\\mathbb{R}"}}) ;
 
   // Override default 'fence' ruler for 'mermaid' support
   var original_fence = md.renderer.rules.fence;
@@ -134,9 +133,6 @@
   function _addEventListener(target, type, listener) {
     if (target.addEventListener) {
       target.addEventListener(type, listener, false);
-    } else if (target.attachEvent) {
-      // for IE6 - IE8
-      target.attachEvent('on' + type, function() { listener.apply(target, arguments); });
     } else {
       // do nothing
     }

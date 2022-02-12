@@ -6,6 +6,15 @@
   padding-left: 10px;
 }
 
+/* https://katex.org/docs/issues.html */
+
+/* block 公式左对齐 */
+.katex-display > .katex { text-align: left; }
+/* Add space between broken lines: */
+.katex-display > .base { margin: 0.25em 0 }
+/* Compensate by reducing space around display math */
+.katex-display { margin: 0.5em 0; }
+
 /* GitHub-like styles based on ghf_marked.css of Docter (https://github.com/alampros/Docter) */
 
 html {
@@ -15,7 +24,7 @@ html {
 }
 
 body {
-  font: 14px DejaVu Sans Mono,WenQuanYi Zen Hei,Courier New,NSimSun,BlinkMacSystemFont,-apple-system,Helvetica Neue,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,sans-serif;
+  font: 14px; /* DejaVu Sans Mono,WenQuanYi Zen Hei,Courier New,NSimSun,BlinkMacSystemFont,-apple-system,Helvetica Neue,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,sans-serif; */
   line-height: 1.6;
   margin: 0 auto;
   padding: 20px;
@@ -67,9 +76,6 @@ h6 {
   font-size: 14px;
   font-weight: bold;
   margin: 20px 0 10px;
-}
-
-hr {
 }
 
 p {
