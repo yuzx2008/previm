@@ -1,154 +1,148 @@
-*previm.txt*	Preview Plugin
+*previm.txt*	Vim 预览插件
 
 Version: 1.6
 Author: kanno <akapanna@gmail.com>
 Maintainer: previm developers
 
 ==============================================================================
-CONTENTS						*previm-contents*
+目录							*previm-contents*
 
-Introduction						|previm-introduction|
-Dependencies						|previm-depends|
-Usage							|previm-usage|
-Commands						|previm-command|
-Functions						|previm-functions|
-Settings						|previm-settings|
-Using with open-browser.vim				|previm-openbrowser|
-Changelog						|previm-changelog|
+简介							|previm-introduction|
+依赖							|previm-depends|
+使用方法						|previm-usage|
+命令							|previm-command|
+函数							|previm-functions|
+设置							|previm-settings|
+与 open-browser.vim 配合使用				|previm-openbrowser|
+更新日志						|previm-changelog|
 
 
 ==============================================================================
-INDRODUCTION						*previm-introduction*
+简介							*previm-introduction*
 
-This plugin provides the functionality of displaying file previews on
-browsers. It achieves something similar to real-time previewing.
+本插件提供在浏览器中预览文件的功能，可实现近乎实时的预览效果。
 
-[Available formats]
+[支持的格式]
 	- Markdown
 	- textile
-	- reStructuredText(required rst2html.py)
+	- reStructuredText (需要 rst2html.py)
 
-Latest revision:
+最新版本:
 http://github.com/previm/previm
 
 
 ==============================================================================
-DEPENDENCIES						*previm-depends*
+依赖							*previm-depends*
 
-[Required]
-	None
+[必需]
+	无
 
-[Optional]
-	- open-browser.vim(https://github.com/tyru/open-browser.vim)
+[可选]
+	- open-browser.vim (https://github.com/tyru/open-browser.vim)
 
-
-==============================================================================
-USAGE							*previm-usage*
-
-This is an example of the case of markdown.
-The basic operation is the same in other formats.
-
-1. Set |g:previm_open_cmd| in your .vimrc. This is unnecessary if you are using
-open-browser.vim.
-2. Start editing a file with |filetype| of Markdown.
-3. Open preview on browser with |:PrevimOpen|.
-4. Go back to the buffer and edit some more.
-5. Changes are reflected on the page shown in the browser each update.
 
 ==============================================================================
-COMMANDS						*previm-command*
+使用方法						*previm-usage*
+
+以下以 Markdown 为例说明，其他格式的基本操作相同。
+
+1. 在 .vimrc 中设置 |g:previm_open_cmd|。如果使用 open-browser.vim 则无需设置。
+2. 开始编辑 |filetype| 为 Markdown 的文件。
+3. 使用 |:PrevimOpen| 在浏览器中打开预览。
+4. 返回缓冲区继续编辑。
+5. 每次更新时，更改会自动反映到浏览器页面上。
+
+==============================================================================
+命令							*previm-command*
 
 							*:PrevimOpen*
 :PrevimOpen
-	Opens the current file on the browser.
+	在浏览器中打开当前文件的预览。
 
 
 ==============================================================================
-FUNCTIONS						*previm-functions*
+函数							*previm-functions*
 
 previm#open({path})					*previm#open()*
-	Set {path} to the URL to open in browser.
+	将 {path} 设置为要在浏览器中打开的 URL。
 
 previm#refresh()					*previm#refresh()*
-	Apply the changes made to the file. This will automatically update
-	the page shown in the browser.
+	应用对文件所做的更改。这将自动更新浏览器中显示的页面。
 
 
 ==============================================================================
-SETTINGS						*previm-settings*
+设置							*previm-settings*
 
 
 g:previm_open_cmd					*g:previm_open_cmd*
-	Type:String
+	类型: String
 
-	Specify the command to be executed with |:PrevimOpen|. openbrowser#open
-	is executed if no command is specified.
-	Also see |previm-openbrowser|.
+	指定 |:PrevimOpen| 执行的命令。如果未指定，则执行 openbrowser#open。
+	另请参阅 |previm-openbrowser|。
 
-	The following sample configuration opens with Firefox or Google Chrome on Mac.
+	以下示例配置在 Mac 上使用 Firefox 或 Google Chrome 打开。
 >
 	" .vimrc
-        # open by FireFox
+        " 使用 Firefox 打开
 	let g:previm_open_cmd = 'open -a Firefox'
 
-        # open with Google Chrome
+        " 使用 Google Chrome 打开
         let g:previm_open_cmd = 'open -a Google\ Chrome'
 <
 
 g:previm_enable_realtime			*g:previm_enable_realtime*
-	Type:Num
+	类型: Num
 
-	You can select whether you want to preview the changes in real time.
-	Changes are reflected only at the timing if the value 0.
+	选择是否实时预览更改。
+	如果值为 0，则仅在以下时机反映更改:
 
-	  * When saving a file
+	  * 保存文件时
 
-	If the value is 1, I can preview in near real-time.
-	It is set to 0 by default.
+	如果值为 1，则可以近乎实时地预览。
+	默认值为 0。
 
-	The case of changing this value after opening a file to preview is
-	You need to re-open the file to preview in order to reflect the setting.
+	如果在打开预览文件后更改此值，需要重新打开预览文件才能使设置生效。
 >
 	" .vimrc
-	" Realtime preview
+	" 实时预览
 	let g:previm_enable_realtime = 1
 
 g:previm_disable_default_css			*g:previm_disable_default_css*
-	Type:Num
+	类型: Num
 
-	I do not apply the default CSS when previewing.
-	Valid values that can be set only one. All other values are ignored.
+	预览时不应用默认 CSS。
+	只有值为 1 时有效，其他值将被忽略。
 
 >
 	" .vimrc
-	" I want to disable the default CSS
+	" 禁用默认 CSS
 	let g:previm_disable_default_css = 1
 
 g:previm_custom_css_path			*g:previm_custom_css_path*
-	Type:String
+	类型: String
 
-	I can add a custom CSS during preview.
-	This CSS will be loaded after the default CSS.
-	Please write the absolute path to the CSS file to the set value.
+	预览时可以添加自定义 CSS。
+	此 CSS 将在默认 CSS 之后加载。
+	请将 CSS 文件的绝对路径写入设置值。
 
 >
 	" .vimrc
-	" Also apply your own CSS in addition to the default CSS
+	" 在默认 CSS 基础上应用自定义 CSS
 	let g:previm_custom_css_path = '/Users/kanno/tmp/some.css'
 
 	" .vimrc
-	" Instead of using the default CSS and apply only your own CSS
+	" 不使用默认 CSS，仅应用自定义 CSS
 	let g:previm_disable_default_css = 1
 	let g:previm_custom_css_path = '/Users/kanno/tmp/some.css'
 
 g:previm_show_header					*g:previm_show_header*
-	Type:Num
+	类型: Num
 
-	If the value is 1, it will display a header at the time of preview.
-	The header displays the file name and update datetime that you are editing.
+	如果值为 1，预览时将显示页眉。
+	页眉显示正在编辑的文件名和更新时间。
 
-	If the value is 0, it does not display the header at the time of preview.
-	It is set to 1 by default.
+	如果值为 0，预览时不显示页眉。
+	默认值为 1。
 
 >
 	" .vimrc
@@ -156,12 +150,11 @@ g:previm_show_header					*g:previm_show_header*
 
 
 g:previm_plantuml_imageprefix			*g:previm_plantuml_imageprefix*
-	Type:String
+	类型: String
 
-	Specify endpoint of plantuml server if you want to use it in local.
+	如果要在本地使用 PlantUML 服务器，请指定其端点。
 
-	If the value is not specified, http://plantuml.com/plantuml/img/ is
-	used.
+	如果未指定，则使用 http://plantuml.com/plantuml/img/。
 
 >
 	" .vimrc
@@ -169,79 +162,77 @@ g:previm_plantuml_imageprefix			*g:previm_plantuml_imageprefix*
 
 
 ==============================================================================
-USING WITH OPEN-BROWSER.VIM				*previm-openbrowser*
+与 OPEN-BROWSER.VIM 配合使用				*previm-openbrowser*
 
-The following steps are taken for choosing which browser to display the
-preview on.
+选择显示预览的浏览器时，按以下步骤进行:
 
-1. Attempt to execute command that is set to |g:previm_open_cmd|
-  - If |g:previm_open_cmd| is undefined or empty, proceed to step 2
-2. Attempt open browser with openbrowser#open()
-  - If open-browser.vim is not installed, proceed to step 3
-3. Exit after displaying message to standard error about not being able to
-   find any command to execute.
+1. 尝试执行 |g:previm_open_cmd| 中设置的命令
+  - 如果 |g:previm_open_cmd| 未定义或为空，则进入步骤 2
+2. 尝试使用 openbrowser#open() 打开浏览器
+  - 如果未安装 open-browser.vim，则进入步骤 3
+3. 显示无法找到可执行命令的错误信息后退出
 
-Thus, |g:previm_open_cmd| need not be configured when using open-browser.vim.
+因此，使用 open-browser.vim 时无需配置 |g:previm_open_cmd|。
 
 ==============================================================================
-CHANGELOG						*previm-changelog*
+更新日志						*previm-changelog*
 
 1.8.1	2018-07-21
-        - fixes minor bugs
+        - 修复小问题
 
 1.8	2018-07-21
-        - support multiple previews
+        - 支持多个预览
 
 1.7.1	2015-08-17
-        - support hidden header
+        - 支持隐藏页眉
 
 1.7	2015-08-15
-        - support mermaid(https://github.com/knsv/mermaid)
+        - 支持 mermaid (https://github.com/knsv/mermaid)
 
 1.6	2014-09-15
-        - support realtime refresh
+        - 支持实时刷新
 
 1.5.4	2014-09-06
-        - support custom css
+        - 支持自定义 CSS
 
 1.5.3	2014-08-02
-        - support reStructuredText(required rst2html.py)
+        - 支持 reStructuredText (需要 rst2html.py)
 
 1.5.2	2014-07-27
-	- code block syntax highlighting
-        - update marked.js
+	- 代码块语法高亮
+        - 更新 marked.js
 
 1.5.1	2014-06-08
-	- fix bug regarding css
+	- 修复 CSS 相关问题
 
 1.5	2014-04-05
-	- add notice about modula2
+	- 添加关于 modula2 的说明
 
 1.4	2014-03-29
-	- add support for textile
+	- 添加 textile 支持
 
 1.3.2	2013-07-06
-	- local images can now be referenced
-	- fix bug when g:previm_open_cmd contains half-width space character
+	- 现在可以引用本地图片
+	- 修复 g:previm_open_cmd 包含半角空格时的问题
 
 1.3.1	2013-06-28
-	- change showdown.js to "marked"
+	- 将 showdown.js 更换为 marked
 
 1.3	2013-06-22
-	- fixed #4(Github issue)
-	- escape Windows' directory path
-	- add support for browsers before IE8 (add support for attachEvent)
-	- add feature to display modified time under Windows environment
-	- Thanks id:sousu, id:beckorz
+	- 修复 #4 (Github issue)
+	- 转义 Windows 目录路径
+	- 支持 IE8 之前的浏览器 (添加 attachEvent 支持)
+	- 在 Windows 环境下添加显示修改时间的功能
+	- 感谢 id:sousu, id:beckorz
 
 1.2	2013-06-16
-	- resolved reload issue in google chrome
-	- Thanks id:ArcCosine
+	- 解决 Google Chrome 中的重新加载问题
+	- 感谢 id:ArcCosine
 
 1.1	2013-06-13
-	- explicitly state the usage of UTF-8 encoding in previm-function.js
+	- 在 previm-function.js 中明确使用 UTF-8 编码
 
 1.0	2013-06-11
-	- first release
+	- 首次发布
 
 vim:tw=78:ts=8:ft=help:norl:noexpandtab

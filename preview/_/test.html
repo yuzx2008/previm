@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Previm 功能测试</title>
+    <link type="text/css" href="css/lib/default.min.css" rel="stylesheet" media="all" />
+    <link type="text/css" href="css/lib/katex.min.css" rel="stylesheet" media="all" />
+    <link type="text/css" href="css/origin.css" rel="stylesheet" />
+    <link type="text/css" href="css/lib/texmath.min.css" rel="stylesheet" media="all" />
+    <style>
+        body { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .test-case { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .test-case h3 { margin-top: 0; color: #333; }
+        .source { background: #f5f5f5; padding: 10px; font-family: monospace; white-space: pre-wrap; }
+        .result { padding: 10px; border-top: 1px solid #eee; margin-top: 10px; }
+        .pass { border-left: 4px solid #4caf50; }
+        .section, .section0, .section1, .section2, .section3 { opacity: unset; }
+        h2 { border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-top: 30px; }
+    </style>
+</head>
+<body>
+    <h1>Previm 功能测试页面</h1>
+    
+    <h2>一、数学公式测试</h2>
+    <p>测试四种数学公式分隔符格式。</p>
+    
+    <div id="test-results"></div>
+    
+    <h2>二、代码块语言显示测试</h2>
+    <p>测试代码块语言/文件名显示功能。</p>
+    
+    <div id="code-test-results"></div>
+
+    <script src="js/lib/markdown-it.min.js"></script>
+    <script src="js/lib/markdown-it-abbr.min.js"></script>
+    <script src="js/lib/markdown-it-deflist.min.js"></script>
+    <script src="js/lib/markdown-it-footnote.min.js"></script>
+    <script src="js/lib/markdown-it-sub.min.js"></script>
+    <script src="js/lib/markdown-it-sup.min.js"></script>
+    <script src="js/lib/markdown-it-checkbox.min.js"></script>
+    <script src="js/lib/markdown-it-cjk-breaks.min.js"></script>
+    <script src="js/lib/katex.min.js"></script>
+    <script src="js/lib/texmath.min.js"></script>
+    <script src="js/lib/highlight.min.js"></script>
+    
+    <script>
+    'use strict';
+    
+    // Initialize markdown-it with both dollars and brackets delimiters
+    var katexOptions = {macros:{"\\RR": "\\mathbb{R}"}};
+    var md = new window.markdownit({html: true, linkify: true})
+                       .use(window.markdownitAbbr)
+                       .use(window.markdownitDeflist)
+                       .use(window.markdownitFootnote)
+                       .use(window.markdownitSub)
+                       .use(window.markdownitSup)
+                       .use(window.markdownitCheckbox)
+                       .use(window.markdownitCjkBreaks)
+                       .use(texmath, {engine: katex, delimiters:['dollars','brackets'], katexOptions: katexOptions});
+    
+    // 代码块语言显示配置
+    var CODE_LANGUAGE_SHOW = 1;
+    var CODE_LANGUAGE_SEPARATOR = /[\s:]+/;
+    
+    // 重写 fence 规则以支持代码块语言显示
+    var original_fence = md.renderer.rules.fence;
+    md.renderer.rules.fence = function fence(tokens, idx, options, env, slf) {
+        var token = tokens[idx];
+        var info = token.info.trim();
+        var tokenSplit = info.split(CODE_LANGUAGE_SEPARATOR);
+        var codeLangName = tokenSplit[0] || '';
+        var fileName = tokenSplit.slice(1).join(' ');
+        
+        if (CODE_LANGUAGE_SHOW === 1) {
+            token.attrPush(['code-lang', fileName || codeLangName]);
+        } else if (CODE_LANGUAGE_SHOW === 2 && fileName) {
+            token.attrPush(['code-lang', fileName]);
+        }
+        
+        return original_fence(tokens, idx, options, env, slf);
+    };
+    
+    // 数学公式测试用例
+    var mathTestCases = [
+        {
+            name: '1. 单美元符号行内公式: $x$',
+            source: 'Inline formula: $E = mc^2$',
+            description: '使用单美元符号包裹行内公式'
+        },
+        {
+            name: '2. 双美元符号块级公式: $$ x $$',
+            source: '$$\n\\int_0^\\infty e^{-x^2} dx = \\frac{\\sqrt{\\pi}}{2}\n$$',
+            description: '使用双美元符号包裹块级公式'
+        },
+        {
+            name: '3. 圆括号行内公式: \\(x\\)',
+            source: 'Inline formula: \\(x=(x_1,x_2)\\)\n\nAnother example: \\(\\alpha + \\beta = \\gamma\\)',
+            description: '使用反斜杠圆括号包裹行内公式 (LaTeX 风格)'
+        },
+        {
+            name: '4. 方括号块级公式: \\[ x \\]',
+            source: '\\[\nw^\\top x + b = 0\n\\]',
+            description: '使用反斜杠方括号包裹块级公式 (LaTeX 风格)'
+        },
+        {
+            name: '5. 混合使用',
+            source: 'The function \\(f(x) = x^2\\) has derivative $f\'(x) = 2x$.\n\nBlock with dollars:\n$$\n\\sum_{i=1}^{n} i = \\frac{n(n+1)}{2}\n$$\n\nBlock with brackets:\n\\[\n\\prod_{i=1}^{n} i = n!\n\\]',
+            description: '同时使用四种分隔符格式'
+        }
+    ];
+    
+    // 代码块语言显示测试用例
+    var codeTestCases = [
+        {
+            name: '1. 仅指定语言',
+            source: '```javascript\nconsole.log("Hello World");\n```',
+            description: '只指定语言名，显示语言名'
+        },
+        {
+            name: '2. 语言 + 文件名（空格分隔）',
+            source: '```javascript app.js\nfunction main() {\n  return 42;\n}\n```',
+            description: '语言和文件名用空格分隔，显示文件名'
+        },
+        {
+            name: '3. 语言 + 文件名（冒号分隔）',
+            source: '```python:hello.py\nprint("Hello Python")\n```',
+            description: '语言和文件名用冒号分隔，显示文件名'
+        },
+        {
+            name: '4. 多种语言示例',
+            source: '```bash install.sh\nnpm install\n```\n\n```css styles.css\nbody { color: #333; }\n```',
+            description: '多个代码块示例'
+        }
+    ];
+    
+    // 渲染数学公式测试
+    var container = document.getElementById('test-results');
+    mathTestCases.forEach(function(test) {
+        var div = document.createElement('div');
+        div.className = 'test-case';
+        
+        var rendered = md.render(test.source);
+        
+        div.innerHTML = '<h3>' + test.name + '</h3>' +
+                        '<p><em>' + test.description + '</em></p>' +
+                        '<div class="source"><strong>源码:</strong>\n' + test.source.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>' +
+                        '<div class="result"><strong>渲染结果:</strong>' + rendered + '</div>';
+        
+        container.appendChild(div);
+    });
+    
+    // 渲染代码块测试
+    var codeContainer = document.getElementById('code-test-results');
+    codeTestCases.forEach(function(test) {
+        var div = document.createElement('div');
+        div.className = 'test-case';
+        
+        var rendered = md.render(test.source);
+        
+        // 添加代码块语言标签
+        var tempDiv = document.createElement('div');
+        tempDiv.innerHTML = rendered;
+        tempDiv.querySelectorAll('pre code').forEach(function(el) {
+            var codeLang = el.getAttribute('code-lang');
+            if (codeLang) {
+                var langDiv = document.createElement('div');
+                langDiv.className = 'code-lang';
+                langDiv.innerHTML = '<span>' + codeLang + '</span>';
+                el.parentNode.insertBefore(langDiv, el.parentNode.firstElementChild);
+            }
+            hljs.highlightElement(el);
+        });
+        
+        div.innerHTML = '<h3>' + test.name + '</h3>' +
+                        '<p><em>' + test.description + '</em></p>' +
+                        '<div class="source"><strong>源码:</strong>\n' + test.source.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>' +
+                        '<div class="result"><strong>渲染结果:</strong>' + tempDiv.innerHTML + '</div>';
+        
+        codeContainer.appendChild(div);
+    });
+    </script>
+</body>
+</html>

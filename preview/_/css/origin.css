@@ -231,3 +231,16 @@ img {
     page-break-inside: avoid;
   }
 }
+
+/* 代码块语言标签样式 */
+.code-lang {
+  color: #eee;
+  display: inline-block;
+  background-color: #777;
+  padding: 2px 8px;
+  font-size: 12px;
+  border-radius: 3px 3px 0 0;
+  margin-bottom: -1px;
+  position: relative;
+  top: 1px;
+}
