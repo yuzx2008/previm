@@ -36,7 +36,17 @@
                    .use(_win.markdownitSup)
                    .use(_win.markdownitCheckbox)
                    .use(_win.markdownitCjkBreaks)
-                   .use(texmath, {engine: katex, delimiters:['dollars','brackets'], katexOptions: katexOptions});
+                   .use(texmath, {engine: katex, delimiters:['dollars','brackets'], katexOptions: katexOptions})
+                   .use(_win.markdownitHeadingNumber, {
+                     level: [1, 2, 3, 4, 5, 6],
+                     numberingClass: 'heading-number',
+                     tocClass: 'previm-toc',
+                     tocListClass: 'previm-toc-list',
+                     tocItemClass: 'previm-toc-item',
+                     tocLinkClass: 'previm-toc-link',
+                     showNumberInToc: true,
+                     tocMarker: '[[toc]]'
+                   });
 
   // ========== 代码块语言显示配置 ==========
 
@@ -190,7 +200,13 @@
       // 5. 代码高亮
       _doc.querySelectorAll('pre code').forEach(function(el) { hljs.highlightElement(el); });
 
-      // 6. 恢复滚动位置
+      // 6. 若存在目录占位符则滚动顶部对齐
+      var tocElement = _doc.querySelector('.previm-toc');
+      if (tocElement && tocElement.previousElementSibling === null) {
+        tocElement.scrollTop = 0;
+      }
+
+      // 7. 恢复滚动位置
       autoScroll('body', beforePageYOffset);
       style_header();
     }

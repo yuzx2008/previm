@@ -31,6 +31,11 @@
     
     <div id="code-test-results"></div>
 
+    <h2>三、标题编号与目录测试</h2>
+    <p>验证 heading-number 插件与 TOC 生成效果。</p>
+
+    <div id="heading-test-results"></div>
+
     <script src="js/lib/markdown-it.min.js"></script>
     <script src="js/lib/markdown-it-abbr.min.js"></script>
     <script src="js/lib/markdown-it-deflist.min.js"></script>
@@ -39,6 +44,7 @@
     <script src="js/lib/markdown-it-sup.min.js"></script>
     <script src="js/lib/markdown-it-checkbox.min.js"></script>
     <script src="js/lib/markdown-it-cjk-breaks.min.js"></script>
+    <script src="js/lib/markdown-it-heading-number.js"></script>
     <script src="js/lib/katex.min.js"></script>
     <script src="js/lib/texmath.min.js"></script>
     <script src="js/lib/highlight.min.js"></script>
@@ -56,7 +62,17 @@
                        .use(window.markdownitSup)
                        .use(window.markdownitCheckbox)
                        .use(window.markdownitCjkBreaks)
-                       .use(texmath, {engine: katex, delimiters:['dollars','brackets'], katexOptions: katexOptions});
+                       .use(texmath, {engine: katex, delimiters:['dollars','brackets'], katexOptions: katexOptions})
+                       .use(window.markdownitHeadingNumber, {
+                           level: [1, 2, 3, 4, 5, 6],
+                           numberingClass: 'heading-number',
+                           tocClass: 'previm-toc',
+                           tocListClass: 'previm-toc-list',
+                           tocItemClass: 'previm-toc-item',
+                           tocLinkClass: 'previm-toc-link',
+                           showNumberInToc: true,
+                           tocMarker: '[[toc]]'
+                       });
     
     // 代码块语言显示配置
     var CODE_LANGUAGE_SHOW = 1;
@@ -177,6 +193,47 @@
                         '<div class="result"><strong>渲染结果:</strong>' + tempDiv.innerHTML + '</div>';
         
         codeContainer.appendChild(div);
+    });
+
+    // 标题编号与目录测试
+    var headingTestCases = [
+        {
+            name: '1. 简单层级编号',
+            source: '# 第一章\n\n## 第一节\n\n### 小节\n',
+            description: '验证 H1-H3 自动编号'
+        },
+        {
+            name: '2. [[toc]] 目录生成',
+            source: '[[toc]]\n\n# 目录起点\n\n## 子标题 A\n\n## 子标题 B\n',
+            description: '目录应展示编号与链接'
+        },
+        {
+            name: '3. 非连续层级',
+            source: '# 顶部\n\n### 跳级小节\n',
+            description: '仅编号配置范围内的层级'
+        },
+        {
+            name: '4. 中文编号与重复标题',
+            source: '# 第一章\n\n# 第一章\n\n## 子节\n',
+            description: '检查中文编号与重复标题 slug'
+        }
+    ];
+
+    var headingContainer = document.getElementById('heading-test-results');
+    headingTestCases.forEach(function(test) {
+        var div = document.createElement('div');
+        div.className = 'test-case';
+
+        var rendered = md.render(test.source);
+        var tempDiv = document.createElement('div');
+        tempDiv.innerHTML = rendered;
+
+        div.innerHTML = '<h3>' + test.name + '</h3>' +
+                        '<p><em>' + test.description + '</em></p>' +
+                        '<div class="source"><strong>源码:</strong>\n' + test.source.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>' +
+                        '<div class="result"><strong>渲染结果:</strong>' + tempDiv.innerHTML + '</div>';
+
+        headingContainer.appendChild(div);
     });
     </script>
 </body>
