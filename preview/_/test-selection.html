@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Previm 复制行为测试</title>
+  <link rel="stylesheet" href="css/lib/default.min.css" />
+  <link rel="stylesheet" href="css/origin.css" />
+  <style>
+    body { max-width: 880px; margin: 32px auto; line-height: 1.6; }
+    .toolbar { margin-bottom: 24px; padding: 12px; border: 1px solid #ddd; background: #fafafa; }
+    .toolbar button { margin-right: 12px; }
+    .log { margin-top: 16px; padding: 12px; background: #f5f5f5; height: 160px; overflow-y: auto; font-family: monospace; }
+  </style>
+</head>
+<body>
+  <h1>复制高亮保持测试</h1>
+  <p>该页面模拟 <code>loadPreview</code> 的轮询刷新逻辑，当检测到选区时应跳过刷新，避免复制过程中高亮消失。</p>
+
+  <div class="toolbar">
+    <button id="replace-content">模拟刷新</button>
+    <button id="toggle-selection">程序化选中文本</button>
+    <span id="skipped" style="margin-left:12px;">跳过刷新：0 次</span>
+  </div>
+
+  <div id="preview" style="border:1px solid #ddd; padding:16px; min-height:240px;">
+    <h2>测试段落</h2>
+    <p>请使用鼠标选择本段文本，然后触发“模拟刷新”。若逻辑正确，选区高亮将保持不变，刷新会延迟到下一次。</p>
+    <p>为进一步验证，可在选中文本后等待 3 秒，确保轮询多次跳过刷新，再取消选区并确认内容能够更新。</p>
+  </div>
+
+  <div class="log" id="log"></div>
+
+  <script src="js/lib/markdown-it.min.js"></script>
+  <script>
+    const REFRESH_INTERVAL = 1000;
+    const logBox = document.getElementById('log');
+    const preview = document.getElementById('preview');
+    const skippedLabel = document.getElementById('skipped');
+    let skippedCount = 0;
+
+    function appendLog(text) {
+      const time = new Date().toLocaleTimeString();
+      const line = document.createElement('div');
+      line.textContent = `[${time}] ${text}`;
+      logBox.appendChild(line);
+      logBox.scrollTop = logBox.scrollHeight;
+    }
+
+    function hasActiveSelection(container) {
+      const selection = window.getSelection();
+      if (!selection || selection.rangeCount === 0) return false;
+      const range = selection.getRangeAt(0);
+      if (range.collapsed) return false;
+      return container.contains(range.commonAncestorContainer);
+    }
+
+    function simulateLoadPreview() {
+      if (hasActiveSelection(preview)) {
+        skippedCount++;
+        skippedLabel.textContent = `跳过刷新：${skippedCount} 次`;
+        appendLog('检测到选区，跳过本次刷新');
+        setTimeout(simulateLoadPreview, REFRESH_INTERVAL);
+        return;
+      }
+
+      preview.innerHTML = `
+        <h2>刷新后的内容</h2>
+        <p>当前时间：${new Date().toLocaleTimeString()}，已成功完成刷新。</p>
+        <p>取消选区后再次点击“模拟刷新”，应立即看到内容更新。</p>
+      `;
+      appendLog('刷新完成');
+    }
+
+    document.getElementById('replace-content').addEventListener('click', simulateLoadPreview);
+
+    document.getElementById('toggle-selection').addEventListener('click', () => {
+      const range = document.createRange();
+      range.selectNodeContents(preview);
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+      appendLog('已通过脚本选中整个预览区域');
+    });
+
+    setTimeout(simulateLoadPreview, REFRESH_INTERVAL * 2);
+  </script>
+</body>
+</html>

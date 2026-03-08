@@ -195,9 +195,13 @@
     }
     if (needReload && (typeof getContent === 'function') && (typeof getFileType === 'function')) {
       var beforePageYOffset = _win.pageYOffset;
+      var previewContainer = _doc.getElementById('preview');
+      if (shouldSkipRefresh(previewContainer)) {
+        _win.setTimeout(loadPreview, REFRESH_INTERVAL);
+        return;
+      }
 
-      // 1. 转换内容为 HTML
-      _doc.getElementById('preview').innerHTML = transform(getFileType(), getContent());
+      previewContainer.innerHTML = transform(getFileType(), getContent());
 
       // 2. 渲染 mermaid 流程图
       mermaid.run();
@@ -231,6 +235,22 @@
       autoScroll('body', beforePageYOffset);
       style_header();
     }
+  }
+
+  // 检查预览区域是否存在非折叠选区
+  function shouldSkipRefresh(container) {
+    if (!container) {
+      return false;
+    }
+    var selection = _win.getSelection ? _win.getSelection() : null;
+    if (!selection || selection.rangeCount === 0) {
+      return false;
+    }
+    var range = selection.getRangeAt(0);
+    if (range.collapsed) {
+      return false;
+    }
+    return container.contains(range.commonAncestorContainer);
   }
 
   // ========== 轮询机制 ==========
