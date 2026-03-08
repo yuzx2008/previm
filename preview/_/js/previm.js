@@ -141,6 +141,27 @@
     }
   }
 
+  function formatLastModified(value) {
+    if (typeof value !== 'string') {
+      return value;
+    }
+    var match = value.match(/^(\d{4})\/(\d{2})\/(\d{2})\s*\((.)\)\s*(\d{2}:\d{2}:\d{2})$/);
+    if (!match) {
+      return value;
+    }
+    var weekdayMap = {
+      '日': '星期日',
+      '一': '星期一',
+      '二': '星期二',
+      '三': '星期三',
+      '四': '星期四',
+      '五': '星期五',
+      '六': '星期六'
+    };
+    var weekday = weekdayMap[match[4]] || match[4];
+    return match[1] + '-' + match[2] + '-' + match[3] + ' ' + match[5] + ' ' + weekday;
+  }
+
   // ========== 预览加载 ==========
 
   /**
@@ -166,7 +187,7 @@
     }
     if (typeof getLastModified === 'function') {
       if (_doc.getElementById('last-modified').innerHTML !== getLastModified()) {
-        _doc.getElementById('last-modified').innerHTML = getLastModified();
+        _doc.getElementById('last-modified').innerHTML = formatLastModified(getLastModified());
         needReload = true;
       }
     } else {
