@@ -26,6 +26,64 @@
   // KaTeX 数学公式配置
   var katexOptions = {macros:{"\\RR": "\\mathbb{R}"}};
 
+  // ========== 主题切换配置 ==========
+
+  // 主题切换: 读取 localStorage 或系统偏好
+  // 默认 dark 模式，data-theme="light" 表示 light 模式
+  function getPreferredTheme() {
+    var stored = _win.localStorage.getItem('previm-theme');
+    if (stored) {
+      return stored;
+    }
+    return _win.matchMedia && _win.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  }
+
+  // 应用主题
+  function applyTheme(theme) {
+    if (theme === 'light') {
+      _doc.documentElement.setAttribute('data-theme', 'light');
+    } else {
+      _doc.documentElement.removeAttribute('data-theme');
+    }
+    _win.localStorage.setItem('previm-theme', theme);
+    updateThemeButton(theme);
+  }
+
+  // 切换主题
+  function toggleTheme() {
+    var current = _doc.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    var next = current === 'light' ? 'dark' : 'light';
+    applyTheme(next);
+  }
+
+  // 更新主题切换按钮文本
+  function updateThemeButton(theme) {
+    var btn = _doc.getElementById('theme-toggle-btn');
+    if (btn) {
+      btn.textContent = theme === 'dark' ? '☀️ Light' : '🌙 Dark';
+    }
+  }
+
+  // 创建主题切换按钮
+  function createThemeToggle() {
+    var btn = _doc.createElement('button');
+    btn.id = 'theme-toggle-btn';
+    btn.className = 'theme-toggle';
+    btn.title = '切换主题';
+    btn.addEventListener('click', toggleTheme);
+    _doc.body.appendChild(btn);
+    applyTheme(getPreferredTheme());
+  }
+
+  // 监听系统主题变化
+  if (_win.matchMedia) {
+    _win.matchMedia('(prefers-color-scheme: light)').addEventListener('change', function(e) {
+      if (!_win.localStorage.getItem('previm-theme')) {
+        applyTheme(e.matches ? 'light' : 'dark');
+      }
+    });
+  }
+
   // markdown-it 解析器配置
   // 支持: 缩写、定义列表、脚注、上下标、复选框、东亚换行、数学公式
   var md = new _win.markdownit({html: true, linkify: true})
@@ -285,7 +343,8 @@
 
   // ========== 启动 ==========
 
-  // 页面加载时立即执行一次预览
+  // 页面加载时创建主题切换按钮并执行一次预览
+  createThemeToggle();
   loadPreview();
 
 })(document, window);

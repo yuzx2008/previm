@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Previm 主题测试</title>
+    <link type="text/css" href="css/lib/default.min.css" rel="stylesheet" media="all" />
+    <link type="text/css" href="css/lib/katex.min.css" rel="stylesheet" media="all" />
+    <link type="text/css" href="css/origin.css" rel="stylesheet" />
+    <link type="text/css" href="css/lib/texmath.min.css" rel="stylesheet" media="all" />
+    <!-- 主题样式放在最后，确保覆盖 highlight.js 默认样式 -->
+    <link type="text/css" href="css/theme.css" rel="stylesheet" />
+    <style>
+        body { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .test-case { border: 1px solid var(--test-case-border, #ddd); padding: 15px; margin: 10px 0; border-radius: 5px; background: var(--test-case-bg, #fff); }
+        .test-case h3 { margin-top: 0; color: var(--text-heading, #333); }
+        .source { background: var(--source-bg, #f5f5f5); padding: 10px; font-family: monospace; white-space: pre-wrap; }
+        .result { padding: 10px; border-top: 1px solid var(--result-border, #eee); margin-top: 10px; }
+        .pass { border-left: 4px solid var(--pass-border, #4caf50); }
+        .section, .section0, .section1, .section2, .section3 { opacity: unset; }
+        h2 { border-bottom: 1px solid var(--border-color, #ccc); padding-bottom: 5px; margin-top: 30px; }
+        
+        /* 主题测试专用样式 */
+        .theme-demo {
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 1px solid var(--border-color, #ccc);
+            background: var(--bg-primary, #fff);
+            color: var(--text-primary, #333);
+        }
+        .theme-demo h4 { margin-top: 0; }
+        .theme-controls {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .theme-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color, #ccc);
+            border-radius: 4px;
+            cursor: pointer;
+            background: var(--bg-secondary, #f8f8f8);
+            color: var(--text-primary, #333);
+        }
+        .theme-btn:hover {
+            border-color: var(--link-color, #4183C4);
+        }
+        .theme-info {
+            padding: 10px;
+            background: var(--bg-tertiary, #fafafa);
+            border-radius: 4px;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Previm 主题测试页面</h1>
+    
+    <h2>一、主题切换控制</h2>
+    <p>测试 light/dark 主题切换功能。</p>
+    
+    <div class="theme-controls">
+        <button class="theme-btn" onclick="applyTheme('light')">Light 模式</button>
+        <button class="theme-btn" onclick="applyTheme('dark')">Dark 模式</button>
+        <button class="theme-btn" onclick="applyTheme(getPreferredTheme())">跟随系统</button>
+    </div>
+    
+    <div class="theme-info">
+        当前主题: <span id="current-theme">light</span> | 
+        系统偏好: <span id="system-theme">light</span> |
+        存储设置: <span id="stored-theme">无</span>
+    </div>
+    
+    <h2>二、主题效果预览</h2>
+    <p>以下元素在不同主题下应显示不同的颜色。</p>
+    
+    <div class="theme-demo">
+        <h4>标题与文本</h4>
+        <p>这是一段普通文本，颜色应随主题变化。</p>
+        <h1>一级标题</h1>
+        <h2>二级标题</h2>
+        <h3>三级标题</h3>
+        <h4>四级标题</h4>
+        <h5>五级标题</h5>
+        <h6>六级标题</h6>
+    </div>
+    
+    <div class="theme-demo">
+        <h4>链接与引用</h4>
+        <p>这是一个<a href="#">链接</a>，颜色应在 dark 模式下更亮。</p>
+        <blockquote>
+            这是一段引用文本，边框和颜色应随主题变化。
+        </blockquote>
+    </div>
+    
+    <div class="theme-demo">
+        <h4>代码块</h4>
+        <p>行内代码 <code>console.log("test")</code> 应有不同的背景和边框。</p>
+        <pre><code class="language-javascript">function hello() {
+  console.log("Hello, World!");
+  return 42;
+}</code></pre>
+    </div>
+    
+    <div class="theme-demo">
+        <h4>表格</h4>
+        <table>
+            <tr>
+                <th>列1</th>
+                <th>列2</th>
+                <th>列3</th>
+            </tr>
+            <tr>
+                <td>数据1</td>
+                <td>数据2</td>
+                <td>数据3</td>
+            </tr>
+            <tr>
+                <td>数据4</td>
+                <td>数据5</td>
+                <td>数据6</td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="theme-demo">
+        <h4>数学公式</h4>
+        <p>行内公式: \(E = mc^2\) 应正常显示。</p>
+        <p>块级公式:</p>
+        \[
+        \int_0^\infty e^{-x^2} dx = \frac{\sqrt{\pi}}{2}
+        \]
+    </div>
+    
+    <div class="theme-demo">
+        <h4>目录样式</h4>
+        <nav class="previm-toc">
+            <ol class="previm-toc-list">
+                <li class="previm-toc-item">
+                    <a class="previm-toc-link" href="#toc-1">一、第一章</a>
+                    <ol class="previm-toc-list">
+                        <li class="previm-toc-item">
+                            <a class="previm-toc-link" href="#toc-1-1">1.1 第一节</a>
+                        </li>
+                    </ol>
+                </li>
+            </ol>
+        </nav>
+    </div>
+
+    <script src="js/lib/markdown-it.min.js"></script>
+    <script src="js/lib/katex.min.js"></script>
+    <script src="js/lib/texmath.min.js"></script>
+    <script src="js/lib/highlight.min.js"></script>
+    
+    <script>
+    'use strict';
+    
+    // 主题切换函数
+    // 默认 dark 模式
+    function getPreferredTheme() {
+        var stored = localStorage.getItem('previm-theme');
+        if (stored) {
+            return stored;
+        }
+        return 'dark'; // 默认 dark 模式
+    }
+
+    function applyTheme(theme) {
+        if (theme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+        }
+        localStorage.setItem('previm-theme', theme);
+        updateThemeInfo();
+    }
+
+    function toggleTheme() {
+        var current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+        var next = current === 'light' ? 'dark' : 'light';
+        applyTheme(next);
+    }
+    
+    function updateThemeInfo() {
+        var current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+        var system = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        var stored = localStorage.getItem('previm-theme') || '无';
+        
+        document.getElementById('current-theme').textContent = current;
+        document.getElementById('system-theme').textContent = system;
+        document.getElementById('stored-theme').textContent = stored;
+    }
+    
+    // 初始化
+    updateThemeInfo();
+    applyTheme(getPreferredTheme());
+    
+    // 代码高亮
+    document.querySelectorAll('pre code').forEach(function(el) {
+        hljs.highlightElement(el);
+    });
+    
+    // 监听系统主题变化
+    if (window.matchMedia) {
+        window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', function(e) {
+            if (!localStorage.getItem('previm-theme')) {
+                applyTheme(e.matches ? 'light' : 'dark');
+            }
+        });
+    }
+    </script>
+</body>
+</html>

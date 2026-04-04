@@ -1,0 +1,334 @@
+/* Previm 主题样式 - Light/Dark 模式 */
+
+/* ========== Dark 主题（默认） ========== */
+:root {
+  --bg-primary: #1e1e1e;
+  --bg-secondary: #252526;
+  --bg-tertiary: #2d2d30;
+  --text-primary: #d4d4d4;
+  --text-secondary: #858585;
+  --text-heading: #d4d4d4;
+  --text-heading-h6: #858585;
+  --border-color: #404040;
+  --border-light: #3c3c3c;
+  --border-table: #404040;
+  --link-color: #6cb6ff;
+  --blockquote-color: #a0a0a0;
+  --blockquote-border: #505050;
+  --code-bg: #252526;
+  --code-border: #3c3c3c;
+  --pre-bg: #252526;
+  --pre-border: #404040;
+  --table-stripe: #2a2a2d;
+  --toc-bg: #2d2d30;
+  --toc-border: #404040;
+  --toc-text: #cccccc;
+  --heading-number-color: #666666;
+  --code-lang-bg: #505050;
+  --code-lang-text: #d4d4d4;
+  --header-border: #404040;
+  --test-case-border: #404040;
+  --test-case-bg: #252526;
+  --source-bg: #1e1e1e;
+  --result-border: #3c3c3c;
+  --pass-border: #4caf50;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+/* ========== Light 主题 ========== */
+[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f8f8;
+  --bg-tertiary: #fafafa;
+  --text-primary: #333333;
+  --text-secondary: #777777;
+  --text-heading: #000000;
+  --text-heading-h6: #777777;
+  --border-color: #cccccc;
+  --border-light: #eaeaea;
+  --border-table: #cccccc;
+  --link-color: #4183C4;
+  --blockquote-color: #777777;
+  --blockquote-border: #dddddd;
+  --code-bg: #f8f8f8;
+  --code-border: #eaeaea;
+  --pre-bg: #f8f8f8;
+  --pre-border: #cccccc;
+  --table-stripe: #f8f8f8;
+  --toc-bg: #fafafa;
+  --toc-border: #dddddd;
+  --toc-text: #555555;
+  --heading-number-color: #999999;
+  --code-lang-bg: #777777;
+  --code-lang-text: #eeeeee;
+  --header-border: #cccccc;
+  --test-case-border: #dddddd;
+  --test-case-bg: #ffffff;
+  --source-bg: #f5f5f5;
+  --result-border: #eeeeee;
+  --pass-border: #4caf50;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+/* ========== Dark 主题代码高亮（默认） ========== */
+pre code.hljs,
+code.hljs {
+  background: var(--pre-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+.hljs-comment {
+  color: #6a9955 !important;
+}
+
+.hljs-punctuation,
+.hljs-tag {
+  color: #d4d4d4aa !important;
+}
+
+.hljs-tag .hljs-attr,
+.hljs-tag .hljs-name {
+  color: #d4d4d4 !important;
+}
+
+.hljs-attribute,
+.hljs-doctag,
+.hljs-keyword,
+.hljs-meta .hljs-keyword,
+.hljs-name,
+.hljs-selector-tag {
+  color: #569cd6 !important;
+}
+
+.hljs-deletion,
+.hljs-number,
+.hljs-quote,
+.hljs-selector-class,
+.hljs-selector-id,
+.hljs-string,
+.hljs-template-tag,
+.hljs-type {
+  color: #ce9178 !important;
+}
+
+.hljs-section,
+.hljs-title {
+  color: #dcdcaa !important;
+}
+
+.hljs-link,
+.hljs-operator,
+.hljs-regexp,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-symbol,
+.hljs-template-variable,
+.hljs-variable {
+  color: #9cdcfe !important;
+}
+
+.hljs-literal {
+  color: #569cd6 !important;
+}
+
+.hljs-addition,
+.hljs-built_in,
+.hljs-bullet,
+.hljs-code {
+  color: #4ec9b0 !important;
+}
+
+.hljs-meta {
+  color: #9cdcfe !important;
+}
+
+.hljs-meta .hljs-string {
+  color: #ce9178 !important;
+}
+
+/* ========== Light 主题代码高亮覆盖 ========== */
+[data-theme="light"] pre code.hljs,
+[data-theme="light"] code.hljs {
+  background: var(--pre-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="light"] .hljs-comment {
+  color: #697070 !important;
+}
+
+[data-theme="light"] .hljs-punctuation,
+[data-theme="light"] .hljs-tag {
+  color: #444a !important;
+}
+
+[data-theme="light"] .hljs-tag .hljs-attr,
+[data-theme="light"] .hljs-tag .hljs-name {
+  color: #444 !important;
+}
+
+[data-theme="light"] .hljs-attribute,
+[data-theme="light"] .hljs-doctag,
+[data-theme="light"] .hljs-keyword,
+[data-theme="light"] .hljs-meta .hljs-keyword,
+[data-theme="light"] .hljs-name,
+[data-theme="light"] .hljs-selector-tag {
+  color: #800 !important;
+}
+
+[data-theme="light"] .hljs-deletion,
+[data-theme="light"] .hljs-number,
+[data-theme="light"] .hljs-quote,
+[data-theme="light"] .hljs-selector-class,
+[data-theme="light"] .hljs-selector-id,
+[data-theme="light"] .hljs-string,
+[data-theme="light"] .hljs-template-tag,
+[data-theme="light"] .hljs-type {
+  color: #800 !important;
+}
+
+[data-theme="light"] .hljs-section,
+[data-theme="light"] .hljs-title {
+  color: #800 !important;
+}
+
+[data-theme="light"] .hljs-link,
+[data-theme="light"] .hljs-operator,
+[data-theme="light"] .hljs-regexp,
+[data-theme="light"] .hljs-selector-attr,
+[data-theme="light"] .hljs-selector-pseudo,
+[data-theme="light"] .hljs-symbol,
+[data-theme="light"] .hljs-template-variable,
+[data-theme="light"] .hljs-variable {
+  color: #ab5656 !important;
+}
+
+[data-theme="light"] .hljs-literal {
+  color: #695 !important;
+}
+
+[data-theme="light"] .hljs-addition,
+[data-theme="light"] .hljs-built_in,
+[data-theme="light"] .hljs-bullet,
+[data-theme="light"] .hljs-code {
+  color: #397300 !important;
+}
+
+[data-theme="light"] .hljs-meta {
+  color: #1f7199 !important;
+}
+
+[data-theme="light"] .hljs-meta .hljs-string {
+  color: #38a !important;
+}
+
+/* ========== 主题切换按钮 ========== */
+.theme-toggle {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--link-color);
+}
+
+/* ========== 应用主题变量 ========== */
+html {
+  background: var(--bg-primary);
+}
+
+body {
+  color: var(--text-primary);
+  background: var(--bg-primary);
+}
+
+h1, h2, h3, h4, h5 {
+  color: var(--text-heading);
+}
+
+h6 {
+  color: var(--text-heading-h6);
+}
+
+.heading-number {
+  color: var(--heading-number-color);
+}
+
+#header {
+  border-bottom: 1px solid var(--header-border);
+}
+
+a, a code {
+  color: var(--link-color);
+}
+
+blockquote {
+  border-left: 4px solid var(--blockquote-border);
+  color: var(--blockquote-color);
+}
+
+pre, .highlight pre {
+  background-color: var(--pre-bg);
+  border: 1px solid var(--pre-border);
+}
+
+code {
+  border: 1px solid var(--code-border);
+  background-color: var(--code-bg);
+}
+
+table tr {
+  border-top: 1px solid var(--border-table);
+  background-color: var(--bg-primary);
+}
+
+table tr:nth-child(2n) {
+  background-color: var(--table-stripe);
+}
+
+table tr th, table tr td {
+  border: 1px solid var(--border-table);
+}
+
+.previm-toc {
+  border: 1px solid var(--toc-border);
+  background: var(--toc-bg);
+}
+
+.previm-toc-link {
+  color: var(--toc-text);
+}
+
+.code-lang {
+  background-color: var(--code-lang-bg);
+  color: var(--code-lang-text);
+}
+
+/* 测试页面样式 */
+.test-case {
+  border: 1px solid var(--test-case-border);
+  background: var(--test-case-bg);
+}
+
+.source {
+  background: var(--source-bg);
+}
+
+.result {
+  border-top: 1px solid var(--result-border);
+}
+
+.pass {
+  border-left: 4px solid var(--pass-border);
+}
