@@ -10,10 +10,12 @@
 
 /* block 公式左对齐 */
 .katex-display > .katex { text-align: left; }
-/* Add space between broken lines: */
-.katex-display > .base { margin: 0.25em 0 }
-/* Compensate by reducing space around display math */
-.katex-display { margin: 0.5em 0; }
+/* 放大公式字体（实际由 texmath.min.css 的 !important 控制，此处备注） */
+/* .katex { font-size: 1.4em; } */
+/* 增大行间距，避免多行公式（如矩阵中的分数）上下挤压 */
+.katex-display > .base { margin: 0.5em 0; }
+/* 增大块级公式上下间距 */
+.katex-display { margin: 1.5em 0; }
 
 /* GitHub-like styles based on ghf_marked.css of Docter (https://github.com/alampros/Docter) */
 

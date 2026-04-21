@@ -119,6 +119,11 @@
             description: '使用反斜杠方括号包裹块级公式 (LaTeX 风格)'
         },
         {
+            name: '6. 矩阵含分数（挤压测试）',
+            source: '$$\n\\boldsymbol{W} =\n\\begin{pmatrix}\nw_{11} & w_{12} & w_{13} \\\\\nw_{21} & w_{22} & w_{23}\n\\end{pmatrix}\n$$\n\n$$\n\\frac{\\partial L}{\\partial \\boldsymbol{W}} =\n\\begin{pmatrix}\n\\frac{\\partial L}{\\partial w_{11}} & \\frac{\\partial L}{\\partial w_{12}} & \\frac{\\partial L}{\\partial w_{13}} \\\\\n\\frac{\\partial L}{\\partial w_{21}} & \\frac{\\partial L}{\\partial w_{22}} & \\frac{\\partial L}{\\partial w_{23}}\n\\end{pmatrix}\n$$',
+            description: '矩阵中包含分数，验证行间距是否充足'
+        },
+        {
             name: '5. 混合使用',
             source: 'The function \\(f(x) = x^2\\) has derivative $f\'(x) = 2x$.\n\nBlock with dollars:\n$$\n\\sum_{i=1}^{n} i = \\frac{n(n+1)}{2}\n$$\n\nBlock with brackets:\n\\[\n\\prod_{i=1}^{n} i = n!\n\\]',
             description: '同时使用四种分隔符格式'
