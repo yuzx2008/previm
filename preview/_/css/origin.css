@@ -123,7 +123,7 @@ pre, code {
 .highlight pre, pre {
   background-color: var(--pre-bg, #f8f8f8);
   border: 1px solid var(--pre-border, #ccc);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 19px;
   overflow: auto;
   border-radius: 3px;
