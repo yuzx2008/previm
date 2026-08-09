@@ -14,15 +14,17 @@ function! previm#open(preview_html_file) abort
   if exists('g:previm_open_cmd') && !empty(g:previm_open_cmd)
     if has('win32') && g:previm_open_cmd =~? 'firefox'
       " windows+firefox環境
-      call s:system(g:previm_open_cmd . ' "file:///'  . fnamemodify(a:preview_html_file, ':p:gs?\\?/?g') . '"')
+      call s:open_command(g:previm_open_cmd . ' "file:///'  . fnamemodify(a:preview_html_file, ':p:gs?\\?/?g') . '"')
     elseif has('win32unix')
-      call s:system(g:previm_open_cmd . ' '''  . system('cygpath -w ' . a:preview_html_file) . '''')
+      call s:open_command(g:previm_open_cmd . ' '''  . system('cygpath -w ' . a:preview_html_file) . '''')
     elseif get(g:, 'previm_wsl_mode', 0) ==# 1
       let l:wsl_file_path = system('wslpath -w ' . a:preview_html_file)
-      call s:system(g:previm_open_cmd . " 'file:///" . fnamemodify(l:wsl_file_path, ':gs?\\?\/?') . '''')
+      call s:open_command(g:previm_open_cmd . " 'file:///" . fnamemodify(l:wsl_file_path, ':gs?\\?\/?') . '''')
     else
-      call s:system(g:previm_open_cmd . ' '''  . a:preview_html_file . '''')
+      call s:open_command(g:previm_open_cmd . ' '''  . a:preview_html_file . '''')
     endif
+  elseif executable('xdg-open') && (exists('*jobstart') || exists('*job_start'))
+    call s:open_command(['xdg-open', a:preview_html_file])
   elseif s:exists_openbrowser()
     let path = a:preview_html_file
     " fix temporary(the cause unknown)
@@ -181,6 +183,20 @@ function! s:system(cmd) abort
   catch /E117.*/
     return system(a:cmd)
   endtry
+endfunction
+
+function! s:open_command(cmd) abort
+  if exists('*jobstart')
+    return jobstart(a:cmd, {'detach': v:true})
+  elseif exists('*job_start')
+    return job_start(a:cmd, {
+          \ 'in_io': 'null',
+          \ 'out_io': 'null',
+          \ 'err_io': 'null',
+          \ 'stoponexit': '',
+          \ })
+  endif
+  return s:system(a:cmd)
 endfunction
 
 function! s:do_external_parse(lines) abort
